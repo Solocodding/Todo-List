@@ -1,6 +1,6 @@
 # TODO Application
 
-A simple yet powerful task management application, server-backed TODO list application that allows users to create, edit, delete, and mark tasks as complete. The project uses **Node.js** with **Express** for the backend, **file system (fs)** to handle data storage, and **HTML, CSS, and JavaScript** for the front end.
+A simple yet powerful task management, server-backed TODO list application that allows users to create, edit, delete, and mark tasks as complete. The project uses **Node.js** with **Express** for the backend, **file system (fs)** to handle data storage, and **HTML, CSS, and JavaScript** for the front end.
 
 ## Features
 
