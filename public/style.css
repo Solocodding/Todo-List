@@ -1,0 +1,142 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color:antiquewhite;
+    overflow: hidden;
+}
+
+#todoContainer {
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#heading {
+    text-align: center;
+    color: #333;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+#inputPart {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#inputField {
+    flex: 1;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+}
+
+#saveBtn {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+#saveBtn:hover {
+    background-color: #218838;
+}
+
+/* Todo List */
+#todoList {
+    margin-top: 20px;
+    max-height: 60vh; 
+    overflow-y: auto; 
+    padding-right: 10px;
+}
+
+#listHead {
+    text-align: center;
+    color: #666;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.todo-text {
+    color: #333;
+    font-size: 1rem;
+    overflow: hidden;
+    width: 60vw;
+}
+.edit-input{
+    color: #333;
+    font-size: 1rem;
+    overflow: hidden;
+    width: 60vw;
+}
+.Btn-Area{
+    display: flex;
+    flex-wrap:nowrap;
+    color: #333;
+    font-size: 1rem;
+    overflow: hidden;
+    width: 60vw;
+}
+
+.Btn-Area button {
+    width: 60px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 5px;
+    transition: background-color 0.3s;
+}
+
+.Btn-Area button:hover {
+    background-color: #0056b3;
+}
+
+.Btn-Area button:nth-child(3) {
+    background-color: #dc3545;
+}
+
+.Btn-Area button:nth-child(3):hover {
+    background-color: #c82333;
+}
+
+.strikethrough {
+    text-decoration: line-through;
+    color: #999;
+}
