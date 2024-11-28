@@ -11,10 +11,9 @@ async function readtodofromServer() {
     try {
         const response = await fetch("http://localhost:9090/data");
         const data = await response.json();
-        // console.log(data);
         todoObject = data;
-        lastId = Math.max(...Object.keys(todoObject).map(Number));
-        // console.log(lastId);
+        // console.log(data);
+        lastId = Math.max(...Object.keys(todoObject).map(Number), 1);
         displayAllTodos();
     }
     catch (error) {
@@ -45,7 +44,7 @@ function displayTodoOnUI(data) {
     editBtn.innerText = "Edit";
     editBtn.addEventListener("click", function () {
         if (!edit_check) {
-            edit_check=true;
+            edit_check = true;  //block other todo to edit
             strikeBtn.setAttribute('disabled', 'true');
             deleteBtn.setAttribute('disabled', 'true');
 
@@ -64,47 +63,36 @@ function displayTodoOnUI(data) {
             saveBtn.addEventListener("click", function () {
                 let newValue = editInput.value.trim();
                 if (newValue !== "") {
-
                     strikeBtn.removeAttribute('disabled');
                     deleteBtn.removeAttribute('disabled');
-
                     preText.innerText = newValue;
                     data.Text = newValue;
-                    updateServer(todoObject);
-
+                    updateServer(data);
                     el.replaceChild(preText, editInput);
                     BtnArea.replaceChild(editBtn, saveBtn);
-                    edit_check=false;
+                    edit_check = false;
                 }
             });
         }
-
     });
-
-
-    if (data.isStriked) {
-        preText.classList.add("strikethrough");
-    }
 
     let strikeBtn = document.createElement("button");
     strikeBtn.innerText = data.isStriked ? "Unstrike" : "Strike";
     data.isStriked ? editBtn.setAttribute('disabled', 'true') : editBtn.removeAttribute('disabled');
     strikeBtn.addEventListener("click", function () {
-
         data.isStriked = !data.isStriked;
         preText.classList.toggle("strikethrough");
         strikeBtn.innerText = data.isStriked ? "Unstrike" : "Strike";
         data.isStriked ? editBtn.setAttribute('disabled', 'true') : editBtn.removeAttribute('disabled');
-        updateServer(todoObject);
+        updateServer(data); 
     });
 
     let deleteBtn = document.createElement("button");
     deleteBtn.innerText = "Delete";
     deleteBtn.addEventListener("click", function () {
-        // deleteTodoFromUI(data.id);
         el.remove();
         data.isdeleted = true;
-        updateServer(todoObject);
+        updateServer(data);
     });
 
     BtnArea.appendChild(strikeBtn);
@@ -114,42 +102,52 @@ function displayTodoOnUI(data) {
     el.appendChild(preText);
     el.appendChild(BtnArea);
     todoList.appendChild(el);
-
 }
 
 saveBtn.addEventListener("click", () => {
     const msg = inputField.value.trim();
     if (msg !== "") {
         const newItem = createItem(msg);
-        todoObject[newItem.id] = newItem;
-        updateServer(todoObject);
-        displayTodoOnUI(newItem);
+        appendTodo(newItem); 
         inputField.value = "";
     }
 });
 
-inputField.addEventListener("keyup", () => {
+inputField.addEventListener("keyup", (event) => {
     if (event.code === "Enter") {
         const msg = inputField.value.trim();
         if (msg !== "") {
             const newItem = createItem(msg);
-            todoObject[newItem.id] = newItem;
-            updateServer(todoObject);
-            displayTodoOnUI(newItem);
+            appendTodo(newItem); 
             inputField.value = "";
         }
     }
-})
+});
 
-function updateServer(todoObject) {
+function appendTodo(newItem) {
+    fetch("http://localhost:9090/appendTodo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newItem)
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Todo appended successfully:", data);
+            todoObject[newItem.id] = newItem;
+            displayTodoOnUI(newItem);
+        })
+        .catch(error => console.error("Error appending todo:", error));
+}
+
+function updateServer(changedTodo) {
     fetch("http://localhost:9090/updateTodo", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(todoObject)
+        body: JSON.stringify(changedTodo)
     })
         .then(response => response.json())
-        .then(data => console.log("Todo updated Successfully:", data))
-        .catch(error => console.error("Error udating todo::", error));
+        .then(data => console.log("Todo updated successfully:", data))
+        .catch(error => console.error("Error updating todo:", error));
 }
 
 function createItem(value) {
